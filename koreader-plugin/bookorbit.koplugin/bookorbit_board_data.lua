@@ -14,7 +14,7 @@ local NetworkMgr = require("ui/network/manager")
 local datetime = require("datetime")
 local util = require("util")
 local T = require("ffi/util").template
-local _ = require("gettext")
+local _ = require("bookorbit_gettext")
 
 local BookOrbitStatsReader = require("bookorbit_stats_reader")
 local CatalogUtil = require("bookorbit_catalog_util")
@@ -105,7 +105,7 @@ function BoardData.relativeDay(iso, now)
     local days = math.floor((dayStart(now) - dayStart(t)) / DAY + 0.5)
     if days <= 1 then return _("yesterday") end
     if days < 7 then return BoardData.longWeekday(t) end
-    return T(_("%1 %2"), BoardData.shortMonth(t), tonumber(os.date("%d", t)))
+    return T(_.pgettext("month-day", "%1 %2"), BoardData.shortMonth(t), tonumber(os.date("%d", t)))
 end
 
 -- "Late September 2025" for a YYYY-MM-DD date.

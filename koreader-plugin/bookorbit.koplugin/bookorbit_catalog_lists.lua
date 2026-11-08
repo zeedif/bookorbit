@@ -17,7 +17,7 @@ local UIManager = require("ui/uimanager")
 local datetime = require("datetime")
 local logger = require("logger")
 local T = require("ffi/util").template
-local _ = require("gettext")
+local _ = require("bookorbit_gettext")
 
 local BoardData = require("bookorbit_board_data")
 local BoardMetrics = require("bookorbit_board_metrics")
@@ -702,7 +702,7 @@ function CatalogLists:listSortSheetModel(sheet)
         end
         return {
             title = _("Sort and filter"),
-            sorts = { labels = { _("Title"), _("Author"), _("Series"), _("Added"), _("Read") }, selected = sort_index },
+            sorts = { labels = { _("Title"), _("Author"), _("Series"), _("Added"), _.pgettext("sort", "Read") }, selected = sort_index },
             order = { labels = order_labels, selected = (s.order or natural) == first_order and 1 or 2 },
             shows = { labels = { _("All"), _("Unread"), _("Reading"), _("Finished") }, selected = show_index },
             rows = {
@@ -716,7 +716,7 @@ function CatalogLists:listSortSheetModel(sheet)
     end
     local by_books = s.sort == "books"
     local name_index = (s.sort == "name_desc") and 2 or 1
-    local shows = kind == "authors" and { _("Everyone"), _("Reading now"), _("Read") } or { _("All series"), _("In progress"), _("Finished") }
+    local shows = kind == "authors" and { _("Everyone"), _("Reading now"), _.pgettext("author-filter", "Read") } or { _("All series"), _("In progress"), _("Finished") }
     local show_index = s.filter == "reading" and 2 or s.filter == "finished" and 3 or 1
     return {
         title = _("Sort and filter"),
@@ -1144,7 +1144,7 @@ function CatalogLists:listToolbar(kind, context)
     local sort_label = sort == "books" and _("Most books") or sort == "name_desc" and _("Name Z–A") or _("Name A–Z")
     local filter = context.filter
     local show_label
-    if kind == "authors" then show_label = filter == "reading" and _("Reading now") or filter == "finished" and _("Read") or _("Everyone")
+    if kind == "authors" then show_label = filter == "reading" and _("Reading now") or filter == "finished" and _.pgettext("author-filter", "Read") or _("Everyone")
     else show_label = filter == "reading" and _("In progress") or filter == "finished" and _("Finished") or _("All series") end
     return {
         { icon = "arrow-up-down", label = sort_label, action = { kind = "sort-sheet", focus = "sort" }, key = "tb-sort" },

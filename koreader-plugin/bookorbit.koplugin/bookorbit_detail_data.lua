@@ -9,7 +9,7 @@ screen; DetailData.build gathers their inputs from the catalog.
 ]]
 
 local T = require("ffi/util").template
-local _ = require("gettext")
+local _ = require("bookorbit_gettext")
 
 local CatalogUtil = require("bookorbit_catalog_util")
 
@@ -357,7 +357,8 @@ local LANGUAGES = { en = "English", eng = "English", english = "English", ja = "
 function DetailData.languageName(code)
     local text = trim(code)
     if not text then return nil end
-    return LANGUAGES[text:lower()] or text
+    local language = LANGUAGES[text:lower()]
+    return language and _(language) or text
 end
 
 local MONTHS = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }
@@ -433,7 +434,7 @@ function DetailData.primary(state, usable, other)
         elseif (state.pct or 0) > 0 then
             return { kind = "continue", icon = "play", labels = { _("Continue reading"), _("Continue") } }
         end
-        return { kind = "start", icon = "book-open", labels = { _("Start reading"), _("Read") } }
+        return { kind = "start", icon = "book-open", labels = { _("Start reading"), _.pgettext("action", "Read") } }
     end
     local file = usable[1]
     if not file then
